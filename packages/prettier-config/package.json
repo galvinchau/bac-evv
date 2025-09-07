@@ -1,0 +1,9 @@
+{
+  "name": "@bac/prettier-config",
+  "version": "0.1.0",
+  "private": false,
+  "main": "index.cjs",
+  "peerDependencies": {
+    "prettier": "^3.0.0"
+  }
+}
