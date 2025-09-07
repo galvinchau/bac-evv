@@ -1,0 +1,12 @@
+# build outputs
+**/.next
+**/dist
+**/build
+**/coverage
+**/.turbo
+
+# dependencies
+**/node_modules
+
+# misc
+pnpm-lock.yaml
