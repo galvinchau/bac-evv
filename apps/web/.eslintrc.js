@@ -1,6 +1,5 @@
+/** ESLint config for Next.js app */
 module.exports = {
-  extends: ["@bac/eslint-config", "next"],
-  rules: {
-    // Add Next-specific overrides later if needed
-  },
+  root: true,
+  extends: ["next/core-web-vitals", "prettier"]
 };
