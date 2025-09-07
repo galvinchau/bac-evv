@@ -32,9 +32,8 @@ jobs:
         run: pnpm install --frozen-lockfile
         working-directory: .
 
-      # TEMP: keep lint green; we'll fix ESLint config later
       - name: Lint (web)
-        run: echo "skip lint for now"
+        run: pnpm run lint
 
   build:
     name: build
