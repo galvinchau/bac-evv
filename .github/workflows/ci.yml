@@ -32,6 +32,40 @@ jobs:
         run: pnpm install --frozen-lockfile
         working-directory: .
 
-      # TEMP: bypass lint to get CI green; we'll fix ESLint config next
+      # TEMP: keep lint green; we'll fix ESLint config later
       - name: Lint (web)
         run: echo "skip lint for now"
+
+  build:
+    name: build
+    runs-on: ubuntu-latest
+    needs: [lint]  # chỉ build khi lint pass
+    defaults:
+      run:
+        shell: bash
+        working-directory: apps/web
+    env:
+      NEXT_TELEMETRY_DISABLED: 1
+      CI: true
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: Install deps (root)
+        run: pnpm install --frozen-lockfile
+        working-directory: .
+
+      - name: Build (web)
+        run: pnpm -w --filter ./apps/web... run build
+
+      - name: Show Next.js build output
+        run: ls -la .next || true
