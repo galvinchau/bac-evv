@@ -1,0 +1,15 @@
+# build outputs
+node_modules
+.next
+dist
+build
+coverage
+
+# lockfiles (t? sinh)
+pnpm-lock.yaml
+yarn.lock
+package-lock.json
+
+# backups / temp
+**/*.backup.json
+**/package.backup.json

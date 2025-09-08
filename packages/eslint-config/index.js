@@ -1,56 +1,47 @@
+// Shared ESLint config for the monorepo (no React here; Next.js apps add 'next/core-web-vitals' locally)
+
 /** @type {import('eslint').Linter.Config} */
 module.exports = {
-  root: false, // will be extended by apps/packages
-  parser: "@typescript-eslint/parser",
+  root: false, // extended by apps/packages
+  parser: '@typescript-eslint/parser',
   parserOptions: {
-    ecmaVersion: "latest",
-    sourceType: "module",
-    project: false,
+    ecmaVersion: 2021,
+    sourceType: 'module',
   },
-  plugins: [
-    "@typescript-eslint",
-    "react",
-    "react-hooks",
-    "react-native",
-    "import",
-    "simple-import-sort",
-  ],
+  plugins: ['@typescript-eslint', 'import', 'simple-import-sort', 'prettier'],
   extends: [
-    "eslint:recommended",
-    "plugin:@typescript-eslint/recommended",
-    // Web (Next.js) projects can add "next" in their local config
-    "plugin:react/recommended",
-    "plugin:react-hooks/recommended",
-    "plugin:react-native/all",
-    "plugin:import/recommended",
-    "plugin:import/typescript",
-    "plugin:prettier/recommended",
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
+    // Next.js apps should extend 'next/core-web-vitals' in their local config
+    'plugin:import/recommended',
+    'plugin:import/typescript',
+    'plugin:prettier/recommended',
   ],
   settings: {
-    react: { version: "detect" },
+    'import/resolver': { typescript: true },
   },
   env: {
     es2022: true,
     node: true,
-    browser: true,
+    browser: false,
   },
   rules: {
-    "simple-import-sort/imports": "warn",
-    "simple-import-sort/exports": "warn",
-    "import/order": "off",
-    "@typescript-eslint/no-unused-vars": [
-      "warn",
-      { argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
+    'simple-import-sort/imports': 'warn',
+    'simple-import-sort/exports': 'warn',
+    'import/order': 'off',
+    '@typescript-eslint/no-unused-vars': [
+      'warn',
+      { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
     ],
-    "react/react-in-jsx-scope": "off",
+    'prettier/prettier': 'warn',
   },
   overrides: [
     {
-      files: ["**/*.config.{js,cjs,mjs}"],
+      files: ['**/*.config.{js,cjs,mjs}'],
       env: { node: true },
     },
     {
-      files: ["**/*.test.{ts,tsx}", "**/__tests__/**"],
+      files: ['**/*.{test,spec}.{ts,tsx}', '**/__tests__/**'],
       env: { jest: true },
     },
   ],
