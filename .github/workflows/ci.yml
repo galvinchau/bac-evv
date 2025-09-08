@@ -1,3 +1,4 @@
+# ci-ping
 on:
   push:
     branches: [ "main" ]
