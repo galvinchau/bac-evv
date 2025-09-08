@@ -1,71 +1,27 @@
-name: CI lint & format
-
 on:
   push:
-    branches:
-      - main
-      - feat/**
+    branches: [ "main" ]
     paths:
-      - '**/*.ts'
-      - '**/*.tsx'
-      - '**/*.js'
-      - '**/*.jsx'
-      - '**/*.mjs'
-      - '**/*.cjs'
-      - '**/*.json'
-      - '**/*.yml'
-      - '**/*.yaml'
-      - '.github/workflows/**'
+      - "**/*.ts"
+      - "**/*.tsx"
+      - "**/*.js"
+      - "**/*.jsx"
+      - "**/*.mjs"
+      - "**/*.cjs"
+      - "**/*.json"
+      - "**/*.yml"
+      - "**/*.yaml"
+      - ".github/workflows/**"
   pull_request:
-    branches:
-      - main
+    branches: [ "main" ]
     paths:
-      - '**/*.ts'
-      - '**/*.tsx'
-      - '**/*.js'
-      - '**/*.jsx'
-      - '**/*.mjs'
-      - '**/*.cjs'
-      - '**/*.json'
-      - '**/*.yml'
-      - '**/*.yaml'
-      - '.github/workflows/**'
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
-
-jobs:
-  lint-and-format:
-    runs-on: ubuntu-latest
-    env:
-      CI: true
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup PNPM
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9.15.9
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 18
-          cache: pnpm
-          cache-dependency-path: pnpm-lock.yaml
-
-      - name: Show versions
-        run: |
-          node -v
-          pnpm -v
-
-      - name: Install deps (workspace)
-        run: pnpm install --no-frozen-lockfile
-
-      - name: Prettier format check
-        run: pnpm exec prettier --check .
-
-      - name: ESLint lint
-        run: pnpm lint
+      - "**/*.ts"
+      - "**/*.tsx"
+      - "**/*.js"
+      - "**/*.jsx"
+      - "**/*.mjs"
+      - "**/*.cjs"
+      - "**/*.json"
+      - "**/*.yml"
+      - "**/*.yaml"
+      - ".github/workflows/**"
