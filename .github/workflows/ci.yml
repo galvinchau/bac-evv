@@ -2,7 +2,7 @@ name: CI lint & format
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "feat/ci" ]
   pull_request:
     branches: [ "main" ]
 
@@ -21,11 +21,18 @@ jobs:
           node-version: 18
           cache: 'pnpm'
 
-      - name: Setup PNPM & Install
+      - name: Setup PNPM
         uses: pnpm/action-setup@v4
         with:
           version: 9
-          run_install: true
+
+      - name: Show versions
+        run: |
+          node -v
+          pnpm -v
+
+      - name: Install deps (workspace)
+        run: pnpm install --frozen-lockfile
 
       - name: Prettier format check
         run: pnpm format --check
