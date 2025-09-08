@@ -13,3 +13,4 @@ package-lock.json
 # backups / temp
 **/*.backup.json
 **/package.backup.json
+.github/workflows/ci.yml
