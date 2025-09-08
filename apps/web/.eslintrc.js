@@ -1,4 +1,4 @@
-/** ESLint config for apps/web (Next.js) � temporary: Next only to avoid plugin conflicts */
+/** ESLint config for apps/web (Next.js) � Next only to avoid plugin conflicts */
 module.exports = {
   root: true,
   extends: ['next/core-web-vitals'],
