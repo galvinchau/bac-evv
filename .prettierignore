@@ -1,12 +1,10 @@
 # build outputs
-**/.next
-**/dist
-**/build
-**/coverage
-**/.turbo
+node_modules
+.next
+dist
+build
+coverage
 
-# dependencies
-**/node_modules
-
-# misc
-pnpm-lock.yaml
+# backups / temp
+**/*.backup.json
+**/package.backup.json
