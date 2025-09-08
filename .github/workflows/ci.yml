@@ -1,4 +1,5 @@
 name: CI lint & format
+
 on:
   workflow_dispatch: {}
   push:
@@ -60,6 +61,6 @@ jobs:
 
       - name: Prettier format check
         run: pnpm exec prettier --check .
-
+        
       - name: ESLint lint
         run: pnpm lint
