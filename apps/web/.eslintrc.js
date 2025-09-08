@@ -1,7 +1,7 @@
-/** ESLint config for apps/web (Next.js) */
+/** ESLint config for apps/web (Next.js) � temporary: Next only to avoid plugin conflicts */
 module.exports = {
   root: true,
-  extends: ['next/core-web-vitals', '@bac/eslint-config'],
+  extends: ['next/core-web-vitals'],
   parserOptions: { ecmaVersion: 2021, sourceType: 'module' },
   ignorePatterns: ['.next', 'node_modules', 'dist', 'build', 'coverage'],
 };
