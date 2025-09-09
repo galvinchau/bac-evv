@@ -1,0 +1,63 @@
+name: API smoke
+
+on:
+  workflow_dispatch: {}
+  pull_request:
+    branches: [ main, feat/**, feature/** ]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  api-smoke:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'pnpm'
+
+      - name: Install deps
+        run: pnpm install --frozen-lockfile
+
+      - name: Build API
+        run: pnpm --filter @bac-evv/api build
+
+      - name: Start API in background
+        run: |
+          node apps/api/dist/main.js &
+          echo $! > api.pid
+          sleep 2
+
+      - name: Probe /health
+        run: |
+          for i in {1..20}; do
+            if curl -sf http://127.0.0.1:3001/health | grep -q '"ok"'; then
+              echo "API healthy!"; exit 0
+            fi
+            echo "Retry $i..."; sleep 1
+          done
+          echo "API not responding."; exit 1
+
+      - name: Show diagnostics (on failure)
+        if: failure()
+        run: |
+          ps aux | grep node || true
+          sudo ss -lptn || true
+
+      - name: Stop API (always)
+        if: always()
+        run: |
+          kill $(cat api.pid) 2>/dev/null || true
+          pkill -f "apps/api/dist/main.js" 2>/dev/null || true
