@@ -1,13 +1,13 @@
 name: Test API Only
 
 on:
-  workflow_dispatch: # bật nút "Run workflow" thủ công trong Actions
+  workflow_dispatch: # luôn bật nút Run workflow
   push:
     branches:
-      - feat/api-scaffold
+      - "**"
   pull_request:
     branches:
-      - main
+      - "**"
 
 jobs:
   api-check:
