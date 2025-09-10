@@ -1,7 +1,7 @@
 name: Test API Only
 
 on:
-  workflow_dispatch: # luôn bật nút Run workflow
+  workflow_dispatch: # luôn bật nút "Run workflow" thủ công
   push:
     branches:
       - "**"
