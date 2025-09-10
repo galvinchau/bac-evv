@@ -1,7 +1,7 @@
 name: Test API Only
 
 on:
-  workflow_dispatch: # luôn bật nút "Run workflow"
+  workflow_dispatch:    # luôn có nút "Run workflow"
   push:
     branches:
       - "**"
@@ -17,15 +17,21 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup PNPM
-        uses: pnpm/action-setup@v4
-        with:
-          run_install: true
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
+
+      # Cài PNPM nhưng KHÔNG auto install (tránh lỗi 'cwd: undefined')
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v4
+        with:
+          run_install: false
+
+      # Cài dependency rõ ràng tại root
+      - name: Install dependencies
+        run: pnpm install
+        working-directory: .
 
       - name: Lint API
         run: pnpm lint
