@@ -1,7 +1,7 @@
 name: Test API Only
 
 on:
-  workflow_dispatch: # cho phép chạy tay từ tab Actions
+  workflow_dispatch: # bật nút "Run workflow" thủ công trong Actions
   push:
     branches:
       - feat/api-scaffold
