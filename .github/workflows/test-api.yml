@@ -17,14 +17,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # CÀI PNPM TRƯỚC
       - name: Setup PNPM
         uses: pnpm/action-setup@v4
         with:
-          version: 9
           run_install: true
 
-      # CÀI NODE (KHÔNG dùng cache: 'pnpm' để tránh cần pnpm trước khi cài)
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
