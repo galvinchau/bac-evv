@@ -3,7 +3,7 @@ name: API smoke
 on:
   workflow_dispatch: {}
   pull_request:
-    branches: [ main, feat/**, feature/** ]
+    branches: [main, feat/**, feature/**]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
