@@ -6,18 +6,42 @@
     "apps/*",
     "packages/*"
   ],
+  "engines": {
+    "node": ">=20 <21"
+  },
+  "packageManager": "pnpm@9.15.9",
   "scripts": {
-    "dev": "turbo run dev",
-    "build": "turbo run build",
-    "lint": "eslint . --ext .ts,.tsx --fix",
-    "clean": "turbo run clean",
+    "//": "=== API-only: map các lệnh mặc định sang chạy riêng package apps/api ===",
+    "dev": "turbo run dev --filter=api",
+    "build": "turbo run build --filter=api",
+    "lint": "turbo run lint --filter=api",
+    "typecheck": "turbo run typecheck --filter=api",
+    "clean": "turbo run clean --filter=api",
+
+    "//:alias": "Alias rõ ràng nếu bạn muốn gọi tường minh",
+    "dev:api": "turbo run dev --filter=api",
+    "build:api": "turbo run build --filter=api",
+    "lint:api": "turbo run lint --filter=api",
+    "typecheck:api": "turbo run typecheck --filter=api",
+    "clean:api": "turbo run clean --filter=api",
+
+    "//:format": "Prettier root cho file cấu hình; hook Husky sẽ gọi lint-staged",
+    "format:check": "prettier --check \"**/*.{json,md,yml,yaml}\"",
+    "format:write": "prettier --write \"**/*.{json,md,yml,yaml}\"",
+
+    "//:legacy": "Giữ lại lệnh format toàn repo nếu cần dùng thủ công",
     "format": "prettier --write .",
+
+    "//:husky": "Chuẩn bị Husky; hook nằm ở .husky/pre-commit",
     "prepare": "husky"
   },
   "lint-staged": {
-    "*.{ts,tsx,js,json,md}": [
-      "prettier --write",
-      "eslint --fix"
+    "apps/api/**/*.{ts,tsx,js}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,yml,yaml}": [
+      "prettier --write"
     ]
   },
   "devDependencies": {
@@ -30,13 +54,14 @@
     "eslint-plugin-prettier": "^5.2.2",
     "eslint-plugin-simple-import-sort": "^12.0.0",
     "eslint-plugin-unused-imports": "^4.2.0",
+    "eslint-import-resolver-typescript": "^3.6.1",
     "globals": "^16.0.0",
     "husky": "^9.0.0",
     "lint-staged": "^15.0.0",
     "prettier": "^3.6.2",
     "ts-node": "^10.9.2",
     "turbo": "^2.0.0",
-    "typescript": "^5.3.0"
-  },
-  "packageManager": "pnpm@9.15.9"
+    "typescript": "^5.3.0",
+    "typescript-eslint": "^8.0.0"
+  }
 }

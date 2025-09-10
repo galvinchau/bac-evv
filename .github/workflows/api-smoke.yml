@@ -1,0 +1,56 @@
+﻿name: API smoke
+
+on:
+  push:
+    branches: [ feat/api-scaffold ]
+  pull_request:
+    branches: [ main, feat/api-scaffold ]
+
+jobs:
+  api-smoke:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Install deps (workspace)
+        run: pnpm install --frozen-lockfile=false
+
+      - name: Build API
+        run: pnpm -F @bac-evv/api build
+
+      - name: Start API in background
+        run: |
+          nohup pnpm -F @bac-evv/api start > api.log 2>&1 &
+          sleep 2
+          tail -n +1 api.log || true
+
+      - name: Probe /health
+        run: |
+          for i in {1..20}; do
+            echo "Retry $i..."
+            if curl -fsS http://localhost:3000/health; then
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "API not responding."
+          echo "==== api.log ===="
+          cat api.log || true
+          exit 1
+
+      - name: Stop API (always)
+        if: always()
+        run: pkill -f "node dist/main.js" || true

@@ -1,13 +1,13 @@
 name: Test API Only
 
 on:
-  workflow_dispatch: # bật nút "Run workflow" thủ công trong Actions
+  workflow_dispatch:    # luôn có nút "Run workflow"
   push:
     branches:
-      - feat/api-scaffold
+      - "**"
   pull_request:
     branches:
-      - main
+      - "**"
 
 jobs:
   api-check:
@@ -21,13 +21,15 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'pnpm'
 
       - name: Setup PNPM
         uses: pnpm/action-setup@v4
         with:
-          version: 9
-          run_install: true
+          run_install: false
+
+      # Cài dependency tại root, bỏ qua frozen-lockfile để tránh mismatch lỗi
+      - name: Install dependencies
+        run: pnpm install --no-frozen-lockfile
 
       - name: Lint API
         run: pnpm lint
