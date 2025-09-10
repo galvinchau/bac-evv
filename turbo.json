@@ -1,28 +1,22 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "//": "Turbo pipeline chuẩn. Chúng ta chạy API-only nhờ filter trong scripts ở root package.json.",
   "pipeline": {
     "dev": {
-      "//": "Dev không cache để HMR/refresh mượt",
       "cache": false,
       "persistent": true
     },
     "build": {
-      "//": "Build phụ thuộc build của dependencies (nếu có). Xuất dist/build để Turbo cache artifact.",
       "dependsOn": ["^build"],
       "outputs": ["dist/**", "build/**"]
     },
     "typecheck": {
-      "//": "Typecheck độc lập; có thể dùng tsc -p tsconfig.build.json ở apps/api",
       "dependsOn": ["^typecheck"],
       "outputs": []
     },
     "lint": {
-      "//": "Lint không tạo output để cache theo input files",
       "outputs": []
     },
     "clean": {
-      "//": "Cho phép chạy clean nếu package có script clean",
       "outputs": []
     }
   },
