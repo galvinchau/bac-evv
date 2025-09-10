@@ -7,23 +7,19 @@ import importPlugin from 'eslint-plugin-import';
 import unused from 'eslint-plugin-unused-imports';
 import simple from 'eslint-plugin-simple-import-sort';
 
-export default tseslint.config(
+export default [
+  // Base JS + TS recommended
   js.configs.recommended,
   ...tseslint.configs.recommended,
+
   {
     files: ['**/*.ts'],
-    ignores: ['**/*.spec.ts', '**/*.test.ts'], // 🚫 bỏ qua test files trong lint CI
+    ignores: ['**/*.spec.ts', '**/*.test.ts'], // bỏ qua test files trong CI
     languageOptions: {
+      parser: tseslint.parser,
       parserOptions: {
         project: ['./tsconfig.json', './tsconfig.build.json'],
         tsconfigRootDir: new URL('.', import.meta.url).pathname
-      }
-    },
-    settings: {
-      'import/resolver': {
-        typescript: {
-          project: ['./tsconfig.json']
-        }
       }
     },
     plugins: {
@@ -32,18 +28,20 @@ export default tseslint.config(
       'simple-import-sort': simple
     },
     rules: {
-      // Dọn import
+      // Clean imports
       'unused-imports/no-unused-imports': 'warn',
       'simple-import-sort/imports': 'error',
       'simple-import-sort/exports': 'error',
 
-      // Alias TS đã resolve, tắt cảnh báo unmatched
+      // Alias TS đã resolve
       'import/no-unresolved': 'off',
 
-      // 🚨 Tạm tắt strict rule yêu cầu type info để tránh fail CI giai đoạn scaffold
+      // Tắt rule cần type info để tránh fail CI scaffold
       '@typescript-eslint/no-floating-promises': 'off',
       '@typescript-eslint/await-thenable': 'off'
     }
   },
+
+  // Prettier override để disable conflict rules
   prettier
-);
+];
