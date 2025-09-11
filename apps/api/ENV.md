@@ -40,4 +40,3 @@ COGNITO_CLIENT_ID=exampleclientid
 - Local dev: `pnpm -C apps/api dev` → http://localhost:4000/health
 - Migrations: `pnpm -C apps/api run migration:generate`, `migration:run`
 - Keep secrets minimal until the feature requires them (avoid surprises on billing).
-> CI test
