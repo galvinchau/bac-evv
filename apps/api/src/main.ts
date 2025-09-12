@@ -4,7 +4,9 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  await app.listen(4000);
-  console.log('[API] listening on http://localhost:4000');
+
+  // Dùng port 3000 để khớp với Codespaces auto forward
+  await app.listen(3000);
+  console.log('[API] listening on http://localhost:3000');
 }
 bootstrap();
