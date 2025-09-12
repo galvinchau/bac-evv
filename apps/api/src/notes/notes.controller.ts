@@ -1,17 +1,15 @@
-import { Controller, Get, Res } from '@nestjs/common';
-import { Response } from 'express';
+import { Controller, Get, Header, StreamableFile } from '@nestjs/common';
 import { PDFDocument, StandardFonts } from 'pdf-lib';
 
 @Controller('notes')
 export class NotesController {
   @Get('export')
-  async exportPreview(@Res({ passthrough: false }) res: Response) {
-    // Create a simple 1-page A4 PDF as preview
+  @Header('Content-Type', 'application/pdf')
+  @Header('Content-Disposition', 'inline; filename="preview.pdf"')
+  async exportPreview(): Promise<StreamableFile> {
     const pdf = await PDFDocument.create();
-    const page = pdf.addPage([595.28, 841.89]); // A4 size in points
+    const page = pdf.addPage([595.28, 841.89]); // A4
     const { height } = page.getSize();
-
-    // Embed a standard font to avoid viewer issues
     const font = await pdf.embedFont(StandardFonts.Helvetica);
 
     page.drawText('BAC-EVV — Export Preview', { x: 50, y: height - 80, size: 24, font });
@@ -20,14 +18,7 @@ export class NotesController {
       x: 50, y: height - 150, size: 12, font,
     });
 
-    const bytes = await pdf.save(); // Uint8Array
-    res.set({
-      'Content-Type': 'application/pdf',
-      'Content-Disposition': 'inline; filename="preview.pdf"',
-      'Content-Length': String(bytes.length),
-      'Cache-Control': 'no-store',
-    });
-
-    res.status(200).end(Buffer.from(bytes)); // end the response with PDF bytes
+    const bytes = await pdf.save();                // Uint8Array
+    return new StreamableFile(Buffer.from(bytes)); // Nest tự set length & stream
   }
 }
